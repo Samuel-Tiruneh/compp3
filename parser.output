@@ -1,0 +1,377 @@
+Terminals unused in grammar
+
+   RETURN
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: declarations
+    2        | function
+
+    3 declarations: declaration
+    4             | declarations declaration
+
+    5 declaration: type ID ';'
+    6            | type ID '=' expression ';'
+    7            | type ID '=' expression error
+    8            | type ID error
+
+    9 function: type ID '(' ')' '{' declarations 'r' expression ';' '}'
+   10         | type ID '(' ')' '{' error '}'
+
+   11 type: INT
+   12     | FLOAT
+   13     | CHAR
+
+   14 expression: NUMBER
+   15           | ID
+   16           | expression '+' expression
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 9 10
+')' (41) 9 10
+'+' (43) 16
+';' (59) 5 6 9
+'=' (61) 6 7
+'r' (114) 9
+'{' (123) 9 10
+'}' (125) 9 10
+error (256) 7 8 10
+INT (258) 11
+FLOAT (259) 12
+CHAR (260) 13
+ID (261) 5 6 7 8 9 10 15
+NUMBER (262) 14
+RETURN (263)
+
+
+Nonterminals, with rules where they appear
+
+$accept (17)
+    on left: 0
+program (18)
+    on left: 1 2, on right: 0
+declarations (19)
+    on left: 3 4, on right: 1 4 9
+declaration (20)
+    on left: 5 6 7 8, on right: 3 4
+function (21)
+    on left: 9 10, on right: 2
+type (22)
+    on left: 11 12 13, on right: 5 6 7 8 9 10
+expression (23)
+    on left: 14 15 16, on right: 6 7 9 16
+
+
+state 0
+
+    0 $accept: . program $end
+
+    INT    shift, and go to state 1
+    FLOAT  shift, and go to state 2
+    CHAR   shift, and go to state 3
+
+    program       go to state 4
+    declarations  go to state 5
+    declaration   go to state 6
+    function      go to state 7
+    type          go to state 8
+
+
+state 1
+
+   11 type: INT .
+
+    $default  reduce using rule 11 (type)
+
+
+state 2
+
+   12 type: FLOAT .
+
+    $default  reduce using rule 12 (type)
+
+
+state 3
+
+   13 type: CHAR .
+
+    $default  reduce using rule 13 (type)
+
+
+state 4
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 9
+
+
+state 5
+
+    1 program: declarations .
+    4 declarations: declarations . declaration
+
+    INT    shift, and go to state 1
+    FLOAT  shift, and go to state 2
+    CHAR   shift, and go to state 3
+
+    $default  reduce using rule 1 (program)
+
+    declaration  go to state 10
+    type         go to state 11
+
+
+state 6
+
+    3 declarations: declaration .
+
+    $default  reduce using rule 3 (declarations)
+
+
+state 7
+
+    2 program: function .
+
+    $default  reduce using rule 2 (program)
+
+
+state 8
+
+    5 declaration: type . ID ';'
+    6            | type . ID '=' expression ';'
+    7            | type . ID '=' expression error
+    8            | type . ID error
+    9 function: type . ID '(' ')' '{' declarations 'r' expression ';' '}'
+   10         | type . ID '(' ')' '{' error '}'
+
+    ID  shift, and go to state 12
+
+
+state 9
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 10
+
+    4 declarations: declarations declaration .
+
+    $default  reduce using rule 4 (declarations)
+
+
+state 11
+
+    5 declaration: type . ID ';'
+    6            | type . ID '=' expression ';'
+    7            | type . ID '=' expression error
+    8            | type . ID error
+
+    ID  shift, and go to state 13
+
+
+state 12
+
+    5 declaration: type ID . ';'
+    6            | type ID . '=' expression ';'
+    7            | type ID . '=' expression error
+    8            | type ID . error
+    9 function: type ID . '(' ')' '{' declarations 'r' expression ';' '}'
+   10         | type ID . '(' ')' '{' error '}'
+
+    error  shift, and go to state 14
+    '='    shift, and go to state 15
+    ';'    shift, and go to state 16
+    '('    shift, and go to state 17
+
+
+state 13
+
+    5 declaration: type ID . ';'
+    6            | type ID . '=' expression ';'
+    7            | type ID . '=' expression error
+    8            | type ID . error
+
+    error  shift, and go to state 14
+    '='    shift, and go to state 15
+    ';'    shift, and go to state 16
+
+
+state 14
+
+    8 declaration: type ID error .
+
+    $default  reduce using rule 8 (declaration)
+
+
+state 15
+
+    6 declaration: type ID '=' . expression ';'
+    7            | type ID '=' . expression error
+
+    ID      shift, and go to state 18
+    NUMBER  shift, and go to state 19
+
+    expression  go to state 20
+
+
+state 16
+
+    5 declaration: type ID ';' .
+
+    $default  reduce using rule 5 (declaration)
+
+
+state 17
+
+    9 function: type ID '(' . ')' '{' declarations 'r' expression ';' '}'
+   10         | type ID '(' . ')' '{' error '}'
+
+    ')'  shift, and go to state 21
+
+
+state 18
+
+   15 expression: ID .
+
+    $default  reduce using rule 15 (expression)
+
+
+state 19
+
+   14 expression: NUMBER .
+
+    $default  reduce using rule 14 (expression)
+
+
+state 20
+
+    6 declaration: type ID '=' expression . ';'
+    7            | type ID '=' expression . error
+   16 expression: expression . '+' expression
+
+    error  shift, and go to state 22
+    '+'    shift, and go to state 23
+    ';'    shift, and go to state 24
+
+
+state 21
+
+    9 function: type ID '(' ')' . '{' declarations 'r' expression ';' '}'
+   10         | type ID '(' ')' . '{' error '}'
+
+    '{'  shift, and go to state 25
+
+
+state 22
+
+    7 declaration: type ID '=' expression error .
+
+    $default  reduce using rule 7 (declaration)
+
+
+state 23
+
+   16 expression: expression '+' . expression
+
+    ID      shift, and go to state 18
+    NUMBER  shift, and go to state 19
+
+    expression  go to state 26
+
+
+state 24
+
+    6 declaration: type ID '=' expression ';' .
+
+    $default  reduce using rule 6 (declaration)
+
+
+state 25
+
+    9 function: type ID '(' ')' '{' . declarations 'r' expression ';' '}'
+   10         | type ID '(' ')' '{' . error '}'
+
+    error  shift, and go to state 27
+    INT    shift, and go to state 1
+    FLOAT  shift, and go to state 2
+    CHAR   shift, and go to state 3
+
+    declarations  go to state 28
+    declaration   go to state 6
+    type          go to state 11
+
+
+state 26
+
+   16 expression: expression . '+' expression
+   16           | expression '+' expression .
+
+    $default  reduce using rule 16 (expression)
+
+
+state 27
+
+   10 function: type ID '(' ')' '{' error . '}'
+
+    '}'  shift, and go to state 29
+
+
+state 28
+
+    4 declarations: declarations . declaration
+    9 function: type ID '(' ')' '{' declarations . 'r' expression ';' '}'
+
+    INT    shift, and go to state 1
+    FLOAT  shift, and go to state 2
+    CHAR   shift, and go to state 3
+    'r'    shift, and go to state 30
+
+    declaration  go to state 10
+    type         go to state 11
+
+
+state 29
+
+   10 function: type ID '(' ')' '{' error '}' .
+
+    $default  reduce using rule 10 (function)
+
+
+state 30
+
+    9 function: type ID '(' ')' '{' declarations 'r' . expression ';' '}'
+
+    ID      shift, and go to state 18
+    NUMBER  shift, and go to state 19
+
+    expression  go to state 31
+
+
+state 31
+
+    9 function: type ID '(' ')' '{' declarations 'r' expression . ';' '}'
+   16 expression: expression . '+' expression
+
+    '+'  shift, and go to state 23
+    ';'  shift, and go to state 32
+
+
+state 32
+
+    9 function: type ID '(' ')' '{' declarations 'r' expression ';' . '}'
+
+    '}'  shift, and go to state 33
+
+
+state 33
+
+    9 function: type ID '(' ')' '{' declarations 'r' expression ';' '}' .
+
+    $default  reduce using rule 9 (function)

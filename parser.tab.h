@@ -43,7 +43,8 @@
      FLOAT = 259,
      CHAR = 260,
      ID = 261,
-     NUMBER = 262
+     NUMBER = 262,
+     RETURN = 263
    };
 #endif
 

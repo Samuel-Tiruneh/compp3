@@ -1,7 +1,10 @@
 #include <cstdio>
 #include <cstdlib>
+#include "globals.h"
+
 extern FILE *yyin;
 int yyparse();
+int current_column = 0;
 
 int main(int argc, char** argv) {
     if (argc > 1) {
